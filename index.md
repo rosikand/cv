@@ -1,15 +1,28 @@
 # Rohan Sikand
 
 ::: {.subtitle}
-AI Researcher · [Affiliation]
+Stanford CS (AI) B.S., M.S. (2026)
 :::
 
 ::: {.nav}
-[research](#research) [blog](#blog) [github](https://github.com/) [scholar](https://scholar.google.com/) [email](mailto:you@example.com)
+[research](#research) [blog](#blog) [github](https://github.com/) [scholar](https://scholar.google.com/) [email](rsikand@stanford.edu) `rsikand@stanford.edu`
 
 :::
 
-A short bio about yourself and your research interests. Two to three sentences is plenty.
+<!-- > **Note**: I am on the job market! I am looking for research or engineering positions in machine learning. -->
+
+
+I am interested in AI research, ML engineering, startups, and venture capital.
+
+In the past, I’ve conducted research in self-supervised learning at SAIL, engineered segmentation models at insitro, and built many ML projects.
+
+I am currently interested in RL and reasoning for post-training foundation models and also video models and VLA's for robot learning. See my research notebook for more. 
+
+I also infrequently write about startups and venture capital on Substack at Rohan’s Random Walks.
+
+In my free time, I play golf and poker.
+
+
 
 
 ## Research {#research}
