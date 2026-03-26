@@ -1,7 +1,7 @@
 :root {
   --fg: #1a1a1a;
   /* claude themed colors: #faf9f6, #f0eee6 */
-  --bg: #faf9f6; /* off-white #faf9f6, #f0eee6*/
+  --bg: #faf9f6; /* alts: #faf9f6, #f0eee6, addfec79*/
   --accent: #2a5da7;
   --muted: #666;
   --border: #e0e0e0;
@@ -32,9 +32,19 @@ a:hover { text-decoration: underline; }
 ul, ol { margin-left: 1.2rem; margin-bottom: 0.8rem; }
 li { margin-bottom: 0.3rem; }
 
-.subtitle { color: var(--muted); font-size: 1rem; margin-bottom: 1.5rem; }
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.header-text { flex: 1; }
+
+.subtitle { color: var(--muted); font-size: 1rem; margin-bottom: 0; }
+.header .nav { margin-bottom: 0; margin-top: 0.3rem; }
 .nav { margin-bottom: 2rem; }
-.nav a { margin-right: 1.2rem; font-size: 0.9rem; }
+.nav a { margin-right: 0; margin-left: 1.2rem; font-size: 1.0rem; }
 .nav .icon-link { font-size: 1.05rem; color: var(--muted); }
 .nav .icon-link:hover { color: var(--accent); text-decoration: none; }
 .date { color: var(--muted); font-size: 0.85rem; }
