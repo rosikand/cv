@@ -3,26 +3,24 @@
 ::: {.header-text}
 # 🦜 Rohan Sikand
 
-::: {.subtitle}
-Stanford CS (AI) B.S., M.S. (2026)
 :::
-:::
-
-
-:::
-
-
-
 
 ::: {.nav}
 [**Research & Projects**](research.html) [**Blog**](blog.html)
 :::
 
+:::
+
+
 
 
 ![](images/linkedin-profile-pic.jpeg){.profile-pic}
 
+
 > <u>**Note**</u>: I am on the job market! I am looking for research or engineering positions in machine learning. Please feel free to reach out!
+
+
+
 
 I am interested in **AI research, ML engineering, startups, and venture capital**.
 
@@ -36,7 +34,7 @@ In my free time, I play golf and tennis.
 
 Feel free to reach out!
 
-<hr>
+---
 
 ::: {.nav}
 [<i class="bi bi-twitter-x"></i>](https://x.com/rosikand){.icon-link} [<i class="bi bi-linkedin"></i>](https://www.linkedin.com/in/rosikand/){.icon-link} [<i class="bi bi-github"></i>](https://github.com/rosikand){.icon-link} [<i class="bi bi-mortarboard-fill"></i>](https://scholar.google.com/citations?user=E5Z8wUoAAAAJ){.icon-link} [<i class="bi bi-envelope-fill"></i>](mailto:rsikand@stanford.edu){.icon-link}
