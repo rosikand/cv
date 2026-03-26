@@ -2,6 +2,8 @@
 
 # Research and Projects
 
+\> Will update soon!
+
 ::: {.project}
 ![](images/project-one.png){.project-img}
 
