@@ -1,11 +1,10 @@
 :root {
   --fg: #1a1a1a;
-  /* claude themed colors: #faf9f6, #f0eee6 */
-  --bg: #faf9f6; /* off-white #faf9f6, #f0eee6*/
+  --bg: #faf9f6;
   --accent: #2a5da7;
   --muted: #666;
   --border: #e0e0e0;
-  --max-w: 750px;  /* alt: 650px */
+  --sidebar-w: 200px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -15,9 +14,76 @@ body {
   color: var(--fg);
   background: var(--bg);
   line-height: 1.6;
-  max-width: var(--max-w);
+  padding: 3rem 2rem;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 3rem 1.5rem;
+}
+
+/* Two-column layout */
+.page-layout {
+  display: flex;
+  gap: 3rem;
+}
+
+/* Sidebar */
+.sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  position: sticky;
+  top: 2rem;
+  align-self: flex-start;
+}
+
+.sidebar h3 { font-size: 1.2rem; margin-bottom: 0.2rem; }
+
+.sidebar .subtitle {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+.sidebar .profile-pic {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.sidebar-nav {
+  margin-bottom: 1.5rem;
+}
+
+.sidebar-nav a {
+  display: block;
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+  color: var(--fg);
+  font-weight: 500;
+}
+
+.sidebar-nav a:hover { color: var(--accent); }
+
+.sidebar-icons {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.sidebar-icons .icon-link {
+  font-size: 1.1rem;
+  color: var(--muted);
+}
+
+.sidebar-icons .icon-link:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* Main content */
+.main-content {
+  flex: 1;
+  min-width: 0;
 }
 
 h1 { font-size: 1.6rem; margin-bottom: 0.2rem; }
@@ -32,11 +98,6 @@ a:hover { text-decoration: underline; }
 ul, ol { margin-left: 1.2rem; margin-bottom: 0.8rem; }
 li { margin-bottom: 0.3rem; }
 
-.subtitle { color: var(--muted); font-size: 1rem; margin-bottom: 1.5rem; }
-.nav { margin-bottom: 2rem; }
-.nav a { margin-right: 1.2rem; font-size: 0.9rem; }
-.nav .icon-link { font-size: 1.05rem; color: var(--muted); }
-.nav .icon-link:hover { color: var(--accent); text-decoration: none; }
 .date { color: var(--muted); font-size: 0.85rem; }
 .tag { background: #eef; color: var(--accent); padding: 0.1rem 0.4rem; border-radius: 3px; font-size: 0.8rem; }
 .back { font-size: 0.9rem; margin-bottom: 1.5rem; display: inline-block; }
@@ -72,12 +133,3 @@ li { margin-bottom: 0.3rem; }
 hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
 
 img { max-width: 100%; }
-
-.profile-pic {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  object-fit: cover;
-  float: right;
-  margin: 0 0 1rem 1.5rem;
-}
