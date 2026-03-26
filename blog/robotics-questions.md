@@ -1,6 +1,6 @@
 [← back](../index.html){.back}
 
-# Questions in Robotics
+# Questions in Robot Learning
 
 ::: {.date}
 March 2026

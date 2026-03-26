@@ -26,7 +26,7 @@ I am interested in **AI research, ML engineering, startups, and venture capital*
 
 In the past, I’ve conducted research in **self-supervised learning** at SAIL, engineered segmentation models at **insitro**, and built many ML projects.
 
-I am currently interested in **RL and reasoning** for post-training foundation models and also video models and VLA’s for **robot learning**. See my [research notebook](https://rosikand.github.io/research-notebook/) for more.
+I am currently interested in **RL and reasoning** for post-training foundation models and also video models and VLA’s for **robot learning**. See my (informal) [research notebook](https://rosikand.github.io/research-notebook/) for more.
 
 I also infrequently write about startups and venture capital on **Substack** at [**Rohan’s Random Walks**](https://rosikand.substack.com/).
 
@@ -44,7 +44,9 @@ Feel free to reach out!
 
 ::: {.project-text}
 ### [Project Title](projects/project-one.html)
-One-line description. `Venue 2025`
+One-line description. 
+
+`Venue 2025`
 [[paper]](#) [[code]](#)
 :::
 :::
@@ -54,7 +56,9 @@ One-line description. `Venue 2025`
 
 ::: {.project-text}
 ### [Project Title](projects/project-two.html)
-One-line description. `Venue 2025`
+One-line description. 
+
+`Venue 2025`
 [[paper]](#) [[code]](#)
 :::
 :::
@@ -64,7 +68,9 @@ One-line description. `Venue 2025`
 
 ::: {.project-text}
 ### [Project Title](projects/project-three.html)
-One-line description. `Preprint`
+One-line description.
+
+`Preprint`
 [[paper]](#) [[code]](#)
 :::
 :::
@@ -72,8 +78,9 @@ One-line description. `Preprint`
 
 ## Blog {#blog}
 
-- [Model training experience](blog/model-training.html) — *March 26 2026*
-- [Questions in robot learning](blog/robotics-questions.html) — *March 25 2026*
+- [Current research ideas, Spring 2026](blog/research-ideas-spring-2026.html) — *March 26 2026*
+- [Model training experience](blog/model-training.html) — *March 25 2026*
+- [Questions in robot learning](blog/robotics-questions.html) — *March 24 2026*
 <!-- - [The Ingredients required to Start a Startup](blog/startup-ingrediants.html) — *March 24, 2026* -->
 - [Problems and Ideas, c. Fall 2024](blog/problems-fall-2024.html) — *November 25, 2024*
 - [The Next Frontiers: Personalization of AI models](blog/personal-ai.html) — *September 15, 2024*

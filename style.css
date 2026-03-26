@@ -5,7 +5,7 @@
   --accent: #2a5da7;
   --muted: #666;
   --border: #e0e0e0;
-  --max-w: 750px;
+  --max-w: 750px;  /* alt: 650px */
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
