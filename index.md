@@ -12,7 +12,7 @@ Stanford CS (AI) B.S., M.S. (2026)
 :::
 
 
-
+<!-- one page variant -->
 
 <!-- ::: {.nav}
 [**Research & Projects**](#research) [**Blog**](#blog) [<i class="bi bi-twitter-x"></i>](https://x.com/rosikand){.icon-link} [<i class="bi bi-linkedin"></i>](https://www.linkedin.com/in/rosikand/){.icon-link} [<i class="bi bi-github"></i>](https://github.com/rosikand){.icon-link} [<i class="bi bi-mortarboard-fill"></i>](https://scholar.google.com/citations?user=E5Z8wUoAAAAJ){.icon-link} [<i class="bi bi-envelope-fill"></i>](mailto:rsikand@stanford.edu){.icon-link}
