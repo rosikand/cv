@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>problems-fall-2024</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+<link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+
+
+
+
+<p><a href="../index.html" class="back">← back</a></p>
+<h1 id="problems-and-ideas-c.-fall-2024">Problems and Ideas, c.&nbsp;Fall 2024</h1>
+<div class="date">
+<p>November 25th, 2024</p>
+</div>
+<p>Here is (an ongoing) list of some problems and ideas I am currently thinking about, circa November 2024. If you have any thoughts, please reach out!</p>
+<ul>
+<li><p><strong><code>Poor FLOP utilization of GPU cores</code></strong>: billions on top of billions are being spent on compute to power the recent AI revolution, propelling NVIDIA to be the most valuable company in the world. From well-funded labs to seed-stage startups, buying GPU’s for training and performing inference with increasingly large models is necessary. However, what most people don’t realize is that the physical cores on these GPU’s are often underutilized, on training and inference jobs. The recent Llama 3 technical report (see page 10 <a href="https://arxiv.org/pdf/2407.21783">here</a>) states 38-43% MFU (Model FLOPs Utilization) during the training of this suite of models. That’s right: one of the world’s most funded and talent-dense research labs can’t even achieve half of complete FLOP utilization of its compute infrastructure. With over <a href="https://www.sequoiacap.com/article/ais-600b-question/">half a trillion</a> in spending on AI, you’d think we’d better be utilizing each individual GPU core to the best of its ability at every second–idle time per core effectively costs billions of dollars over time. How can we solve this problem? Perhaps a <a href="https://github.com/HazyResearch/ThunderKittens">generalizable</a> <a href="https://github.com/triton-lang/triton">framework</a> for writing CUDA kernels? Better GPU programmers? <a href="https://www.etched.com/announcing-etched">Model-specific hardware</a>? Something you propose? I’m not sure, and I think this is a really difficult technical problem. But if you have any thoughts, please let me know.</p></li>
+<li><p><strong><code>No AI-first horizontal robotics platform and infra</code></strong>: ROS is subpar, is old software, and is not designed to be integrated with the modern AI stack. New <a href="https://x.com/watneyrobotics/status/1861170413482713180">robotics</a> <a href="https://maticrobots.com/blog/why-rust-its-the-safe-choice/">companies</a> are building robotics platforms from the ground up, through forward-thinking systems languages like Rust. <a href="https://x.com/jokrvivek/status/1858932651459309873">Matic’s robotic stack</a> literally runs inside a single compiled rust process on-device (<a href="https://x.com/jokrvivek/status/1859381977759220019">apparently</a> you can deploy your PyTorch model endpoint through a CUDA kernel ported to rust to run on-device)! In addition to building better platforms, we are going to need better infra. AI models are getting larger and larger. LLM’s that OpenAI and Anthropic build can run on acre-scale datacenters without issue. But how are we going to deploy <a href="https://www.physicalintelligence.company/blog/pi0">billions-scale</a> <a href="https://github.com/tonyzhaozh/act">ACT</a>’s or <a href="https://robotics-transformer2.github.io/">VLA</a>’s on-device for physical, robotic applications? Essential points of interest include low-latency, non-leaky abstractions, and specialized hardware. In 10 years, the world will look a lot more roboticized than it is today. Many are predicting GPT-like moments for robotic manipulation. If successful, industries that require manual labor are bound to be severely transformed. How are we going to build the infrastructure to support all of this?</p></li>
+</ul>
+<!-- - **`Clinical trial matching`**: ...  -->
+<!-- - **`The security layer for AI agents**: ...  -->
+<ul>
+<li><strong><code>AI in medicine for diagnostic purposes</code></strong>: The potential for using AI for medical diagnostic purposes is actually what first got me interested in machine learning a half decade ago. “We can classify lung nodules as cancerous or not months before symptoms appear?!” I read. Yet, despite significant progress in academia, bureaucratic obstacles, resistance from traditionalist healthcare staff, and the lack of robustness in machine learning models continue to hinder the transformative potential of AI in healthcare. How will we fix this?</li>
+</ul>
+
+
+
+
+
+</body></html>
