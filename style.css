@@ -83,11 +83,21 @@ hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
 
 img { max-width: 100%; }
 
+.profile-block {
+  float: right;
+  margin: 0 0 1rem 1.5rem;
+  text-align: center;
+}
+
 .profile-pic {
   width: 140px;
   height: 140px;
   border-radius: 50%;
   object-fit: cover;
-  float: right;
-  margin: 0 0 1rem 1.5rem;
+  display: block;
+}
+
+.profile-block .subtitle {
+  font-size: 0.8rem;
+  margin-top: 0.4rem;
 }
