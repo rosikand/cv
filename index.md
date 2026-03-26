@@ -8,15 +8,20 @@ Stanford CS (AI) B.S., M.S. (2026)
 :::
 :::
 
-<!-- ![](images/57341225.jpeg){.profile-pic} -->
 
 :::
 
-<!-- ::: {.nav}
-[research](#research) [blog](#blog) [github](https://github.com/) [scholar](https://scholar.google.com/) `rsikand@stanford.edu`
-::: -->
 
-<!-- > **Note**: I am on the job market! I am looking for research or engineering positions in machine learning. -->
+
+
+::: {.nav}
+[**Research & Projects**](#research) [**Blog**](#blog) [<i class="bi bi-twitter-x"></i>](https://x.com/rosikand){.icon-link} [<i class="bi bi-linkedin"></i>](https://www.linkedin.com/in/rosikand/){.icon-link} [<i class="bi bi-github"></i>](https://github.com/rosikand){.icon-link} [<i class="bi bi-mortarboard-fill"></i>](https://scholar.google.com/citations?user=E5Z8wUoAAAAJ){.icon-link} [<i class="bi bi-envelope-fill"></i>](mailto:rsikand@stanford.edu){.icon-link}
+:::
+
+![](images/linkedin-profile-pic.jpeg){.profile-pic}
+
+
+> **Note**: I am on the job market! I am looking for research or engineering positions in machine learning. Please feel free to reach out! 
 
 
 I am interested in AI research, ML engineering, startups, and venture capital.
@@ -32,6 +37,8 @@ In my free time, I play golf and tennis.
 Feel free to reach out! 
 
 
+
+
 <a href="https://github.com/rosikand" class="fa fa-github"></a>
 <a href="https://twitter.com/rosikand" class="fa fa-twitter"></a>
 <a href="mailto:rsikand@stanford.edu" class="fa fa-envelope-square"></a>
@@ -40,7 +47,7 @@ Feel free to reach out!
 <a href="https://rosikand.substack.com/" class="fa fa-rss"></a>
 
 
-## Research {#research}
+## Research and Projects {#research}
 
 ::: {.project}
 ![](images/project-one.png){.project-img}
