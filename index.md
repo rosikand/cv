@@ -12,7 +12,7 @@
 
 :::
 
----
+
 
 ::: {.subtitle}
 **Stanford CS (AI) B.S., M.S. (2026)**
