@@ -14,7 +14,7 @@
 
 
 
-![](images/linkedin-profile-pic.jpeg){.profile-pic}
+![](images/cartoon.jpg){.profile-pic}
 
 
 > <u>**Note**</u>: I am on the job market! I am looking for research or engineering positions in machine learning. Please feel free to reach out!
