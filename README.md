@@ -39,6 +39,6 @@ _quarto.yml           → render config
 
 ### Variant 3: one pager 
 
-<img width="650" height="778" alt="image" src="https://github.com/user-attachments/assets/8331899f-b345-411c-8ece-4a9c3935dfe5" />
+<img width="461" height="695" alt="image" src="https://github.com/user-attachments/assets/7b87f2ea-0238-4c78-a056-1e9ee836b658" />
 
 
