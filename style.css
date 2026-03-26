@@ -62,3 +62,12 @@ li { margin-bottom: 0.3rem; }
 hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
 
 img { max-width: 100%; }
+
+.profile-pic {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  float: right;
+  margin: 0 0 1rem 1.5rem;
+}
