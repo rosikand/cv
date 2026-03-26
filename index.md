@@ -14,9 +14,9 @@ Stanford CS (AI) B.S., M.S. (2026)
 
 
 
-::: {.nav}
+<!-- ::: {.nav}
 [**Research & Projects**](#research) [**Blog**](#blog) [<i class="bi bi-twitter-x"></i>](https://x.com/rosikand){.icon-link} [<i class="bi bi-linkedin"></i>](https://www.linkedin.com/in/rosikand/){.icon-link} [<i class="bi bi-github"></i>](https://github.com/rosikand){.icon-link} [<i class="bi bi-mortarboard-fill"></i>](https://scholar.google.com/citations?user=E5Z8wUoAAAAJ){.icon-link} [<i class="bi bi-envelope-fill"></i>](mailto:rsikand@stanford.edu){.icon-link}
-:::
+::: -->
 
 ![](images/linkedin-profile-pic.jpeg){.profile-pic}
 
@@ -85,3 +85,10 @@ One-line description.
 - [Problems and Ideas, c. Fall 2024](blog/problems-fall-2024.html) — *November 25, 2024*
 - [The Next Frontiers: Personalization of AI models](blog/personal-ai.html) — *September 15, 2024*
 - [A simple functorch example](blog/functorch.html) — *November 05, 2022*
+
+
+---
+
+::: {.nav}
+[<i class="bi bi-twitter-x"></i>](https://x.com/rosikand){.icon-link} [<i class="bi bi-linkedin"></i>](https://www.linkedin.com/in/rosikand/){.icon-link} [<i class="bi bi-github"></i>](https://github.com/rosikand){.icon-link} [<i class="bi bi-mortarboard-fill"></i>](https://scholar.google.com/citations?user=E5Z8wUoAAAAJ){.icon-link} [<i class="bi bi-envelope-fill"></i>](mailto:rsikand@stanford.edu){.icon-link}
+:::
