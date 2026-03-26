@@ -1,7 +1,7 @@
 ::: {.page-layout}
 
 ::: {.sidebar}
-![](images/linkedin-profile-pic.jpeg){.profile-pic}
+![](images/cartoon.jpg){.profile-pic}
 
 ### 🦜 Rohan Sikand
 
