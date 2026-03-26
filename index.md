@@ -1,15 +1,20 @@
+::: {.header}
+
+::: {.header-text}
 # 🦜 Rohan Sikand
-
-
 
 ::: {.subtitle}
 Stanford CS (AI) B.S., M.S. (2026)
 :::
+:::
 
-::: {.nav}
-[research](#research) [blog](#blog) [github](https://github.com/) [scholar](https://scholar.google.com/) `rsikand@stanford.edu`
+<!-- ![](images/57341225.jpeg){.profile-pic} -->
 
 :::
+
+<!-- ::: {.nav}
+[research](#research) [blog](#blog) [github](https://github.com/) [scholar](https://scholar.google.com/) `rsikand@stanford.edu`
+::: -->
 
 <!-- > **Note**: I am on the job market! I am looking for research or engineering positions in machine learning. -->
 
@@ -52,5 +57,7 @@ One-line description. `Preprint`
 
 ## Blog {#blog}
 
-- [Blog Post Title](blog/post-one.html) — *March 2026*
-- [Blog Post Title](blog/post-two.html) — *January 2026*
+- [Model training experience](blog/model-training.html) — *March 26 2026*
+- [Questions in robot learning](blog/robotics-questions.html) — *March 25 2026*
+- [The Ingredients required to Start a Startup](blog/startup-ingrediants.html) — *March 24, 2026*
+

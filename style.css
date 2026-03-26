@@ -1,10 +1,11 @@
 :root {
   --fg: #1a1a1a;
-  --bg: #fdfdfd;
+  /* claude themed colors: #faf9f6, #f0eee6 */
+  --bg: #faf9f6; /* off-white #faf9f6, #f0eee6*/
   --accent: #2a5da7;
   --muted: #666;
   --border: #e0e0e0;
-  --max-w: 640px;
+  --max-w: 650px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
