@@ -33,7 +33,6 @@ _quarto.yml           → render config
 
 <img width="871" height="637" alt="image" src="https://github.com/user-attachments/assets/382bd770-e8b7-49b1-a72d-8f7fc8988141" />
 
-
 ### Variant 2: side nav bar 
 
 
