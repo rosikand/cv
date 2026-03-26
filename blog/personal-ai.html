@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>personal-ai</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+
+
+
+
+<p><a href="../index.html" class="back">← back</a></p>
+<h1 id="the-next-frontiers-personalization-of-ai-models">The Next Frontiers: Personalization of AI models</h1>
+<div class="date">
+<p>September 15th, 2024</p>
+</div>
+<p>This post is part of my "The Next Frontiers" series where I delve deeper into a technology that I think will be pervasive across society in 5 to 15 years.</p>
+<p>This post focuses on the personalization of AI models. Right now, we have these uniform mega-models that are hosted in the cloud, running in application layer products. For each application, the weights stay the same, meaning the model itself is the same for application A and application B. Perhaps this means generality, but it can also be a limitation. Instead of having a 175B-parameter model that is deployed on application A and application B, what if we have separate LoRa-adapted, fine-tuned models for application’s A and B respectively.</p>
+<ul>
+<li><p><strong><code>Computational gains</code></strong>: due to Moore’s law, training ML models will become more efficient and less expensive per parameter. This enables larger models to be trained at a cheaper cost. Perhaps the real benefit of the increasing computational and hardware efficiencies is realized in the inference realm. It is not far fetched that we can have <span class="math inline">\(175\)</span>B parameter models running on device in the near future.</p></li>
+<li><p><strong><code>Research and algorithmic gains</code></strong>: The advent of scaling laws, the scaling hypothesis, and the bitter lesson all point to the fact that methods that leverage computation efficiently will perform better in the long run. This implies that the larger the model, the better it will perform. However, recent algorithmic advances add another tangent to think about. OpenAI’s strawberry algorithm scales inference-time compute to be able to reason better. Notably, this advancement is detached from an increasing in model size and training compute: it was all done on the inference side. The conseqouence of this is that smaller models, embedded with these newfound reasoning capabilities due to inference-time compute, might result in the adoption of smaller models across the application layer. More specificially, reasoning increases might lead to applications training their own 1B-parameter models instead of relying on the ChatGPT 175B+-model api. Another example of algorithmic development is that of State Space Models (SSM’s). The premise behind these models is that they scale linearly wrt the input size instead of quadratically like transformers do. Cartesia, the company developing these models for real-world use, thinks that this development will enable ubiqitious intelligence at scale, on any device.</p></li>
+<li><p><strong><code>Middle-layer developments</code></strong>: include techniques such as RAG. Thinking of layers, one can imagine the base layer as the OpenAI API model, the middle layer as something like RAG, and the application (final) layer as the product which is offered to the user. These middle layers essentially try to make the models more tailored for application use. For some reasons that I cannot quite pin down yet, I am slightly bearish on these seeing any long-term adoption. I think this is due to the previous two points: if we ride the waves of (1) computational advances and (2) reasoning and algorithmic advances, middle layer technologies lose their moat and become unnessary: what is the point of RAG if we can have a small model training on the user’s documents themselves? I do however think there exists a <span class="math inline">\(n\)</span>-to-<span class="math inline">\(m\)</span> year latency where <span class="math inline">\(n\)</span> is upper bounded by <span class="math inline">\(~2\)</span> and <span class="math inline">\(m\)</span> is upper bounded by <span class="math inline">\(~10\)</span> in which middle layer technologies like RAG stay relevant towards the goal of personalization of AI models.</p></li>
+<li><p><strong><code>Some remaining questions</code></strong>:</p>
+<ul>
+<li>How do we iterively update models on the fly in presence of new data? If we deploy a small model on-device tailored for a specific user, what do we do after they added 100 more documents to their device? Do we warm start the pre-training process? Fine-tune with LoRa? If so, how would one train these models on the fly, on-device, untethered from the cloud?</li>
+<li>Perhaps we avoid all of this by "in-context learning" and avoid gradient updates all together.</li>
+</ul></li>
+<li><p><strong><code>Conlusion</code></strong>: All of the above questions and comments remain pain points for getting AI models to be more personalized. Though, the resulting increase in algorithmic and computational advances might lead us to a world where we all have a small model living in our device, trained on our own data. One that understands us a bit better. A more personalized AI model. A second brain of some sorts.</p></li>
+</ul>
+<p>Visually speaking, here is how I think about vertical AI:</p>
+<p><img src="../images/moat-graph-ai.png" alt="graph pic"></p>
+<p>with this being said…</p>
+
+
+
+
+
+
+</body></html>
