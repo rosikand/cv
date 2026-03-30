@@ -14,7 +14,7 @@ March 2026
 \> *To be updated...* 
 
 *Note: see my (informal) [research notebook](https://rosikand.github.io/research-notebook/) for more*. 
-
+<!-- 
 My research sits at the intersection of reinforcement learning, large language models, and robot learning. Below is a more detailed account of the specific directions I am pursuing and the questions that drive my work.
 
 ## RL Post-Training for Language Models
@@ -148,4 +148,4 @@ A few things I'm interested in that don't fit neatly into the GLARE narrative:
 
 I'm actively looking for research collaborations on RL post-training and reward modeling, compute partnerships for scaling GLARE experiments to 8B–14B models, and feedback on the ideas above. If any of this resonates — especially the non-verifiable domain transfer story or the Auto-PRM extension — I'd love to talk.
 
-📧 rsikand@stanford.edu
+📧 rsikand@stanford.edu -->

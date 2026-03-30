@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>pg</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+
+
+
+
+<!-- ---
+format:
+  html:
+    theme: cosmo
+    syntax-highlighting: github
+    code-block-bg: true
+    # code-block-border: "#3b82f6"
+    code-line-numbers: false
+    code-copy: hover
+    # code-overflow: wrap
+--- -->
+<p><a href="../index.html" class="back">← back</a></p>
+<h1 id="policy-gradient-from-scratch">Policy gradient from scratch</h1>
+<p>I went back to the basics this past weekend to sit down and implement basic reinforcement learning algorithms from scratch, focusing on policy gradient methods, starting with REINFORCE, then PPO, then GRPO. I focused on a small environment setup: GridWorld, where the policy’s objective is to find an optimal path from the top left corner of a grid to the bottom right corner. At each, discrete, step, it receives a reward of -10 if it is not in the goal state and a reward of 1 if it is. Along the way, I ended up building my own mini rl env toolkit called <a href="https://github.com/rosikand/tinyrl">tinyrl</a>—check it out!</p>
+<h2 id="the-setup">The setup</h2>
+<ul>
+<li>We have an agent in an environment. At each step, the agent sees a state s, picks an action a, gets a reward r, and lands in a new state. An episode is a sequence of these interactions until done.</li>
+<li>The agent picks actions according to a policy at each state. Right now we have a random policy picks uniformly. We want a learned policy that picks good actions.</li>
+<li>Here’s the key question: what does “good” mean?
+<ul>
+<li>We define an objective function J: the expected total reward over an episode (we us expectation since we want to optimize across all the episodes, not just one). We want to find the policy that maximizes J.</li>
+<li>So the problem is: we have a function J (expected total reward), it depends on how we pick actions (the policy), and we want to adjust the policy to make J as large as possible.</li>
+</ul></li>
+</ul>
+<h2 id="a-lay-of-the-land">A lay of the land</h2>
+<ul>
+<li>What does The policy π_θ(a_t | s_t) even mean? It says, at each state, we have its own probability distribution: Maybe at (0,0) it’s [0.02, 0.60, 0.35, 0.03], meaning “mostly go right or down” (which makes sense, since the goal is at (4,4)). At (4,3) it might be [0.01, 0.95, 0.02, 0.02], meaning “almost certainly go right” (one step from the goal). For the random policy, it’s the same distribution at every state: [0.25, 0.25, 0.25, 0.25]. Equal chance of each action.</li>
+<li>At each step, the agent looks at its current state, gets the probability vector from the policy, and samples one action from that distribution. (note: since its probablistic, it is not determinsitic at each state).</li>
+</ul>
+<p>Visual:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img src="attachment:c1b5972c-d6c7-46c5-bdb6-aa403e3e219a.png"></p>
+<figcaption>image.png</figcaption>
+</figure>
+</div>
+<h2 id="optimization">Optimization</h2>
+<ul>
+<li>We want to optimize J(θ) = E[total reward] via gradient ascent.</li>
+<li>What makes computing ∇J harder than a standard gradient in supervised learning?</li>
+</ul>
+<p>An episode is a <strong>trajectory</strong>: a sequence of (state, action, reward) tuples. For example: (s0, a0, r0), (s1, a1, r1), …, (sT, aT, rT). The total reward is just the sum of all the r’s in that sequence.</p>
+<p>The probability of a specific trajectory comes from two things multiplied together at every step:</p>
+<ol type="1">
+<li><p><strong>The policy</strong> π_θ(a_t | s_t): the probability <em>we</em> chose action a_t at state s_t. We control this.</p></li>
+<li><p><strong>The environment dynamics</strong> P(s_{t+1} | s_t, a_t): the probability the environment transitioned to s_{t+1} after we took a_t. We don’t control this (and in our grid world, this is deterministic, so it’s always 1 or 0).</p></li>
+</ol>
+<p>The probability of a full trajectory is the product of all these at each step. That product defines a distribution over all possible trajectories. Each trajectory maps to a total reward. So we get a distribution over total rewards.</p>
+<p>When we change θ, we change π_θ, which changes the trajectory distribution, which changes the distribution of total rewards, which changes J.</p>
+<p><strong>The punchline:</strong> we only control half of what generates a trajectory. We control action selection (π_θ), but not the environment dynamics (P). This is exactly what makes computing ∇J tricky, and it’s what the log-derivative trick will solve for us.</p>
+<p>So, back to the question: we want ∇J to do gradient ascent. In supervised learning, you can backprop through the entire computation. Here, part of the computation (the environment) is a black box. How do you take a gradient through something you can’t differentiate?</p>
+<h2 id="math">Math</h2>
+<p>More formally:</p>
+<p>Let a trajectory <span class="math inline">\(\tau\)</span> be:</p>
+<p><span class="math display">\[
+\tau = (s_0, a_0, r_0, s_1, a_1, r_1, \dots, s_T, a_T, r_T)
+\]</span></p>
+<p>The probability of this specific trajectory under policy <span class="math inline">\(\pi_\theta\)</span> is:</p>
+<p><span class="math display">\[
+P(\tau \mid \theta) = p(s_0)\prod_{t=0}^{T} \left[ \pi_\theta(a_t \mid s_t)\, P(s_{t+1} \mid s_t, a_t) \right]
+\]</span></p>
+<p>Breaking that apart:</p>
+<ul>
+<li><span class="math inline">\(p(s_0)\)</span>: the starting state distribution. For us, this is always <span class="math inline">\((0,0)\)</span>, so this is <span class="math inline">\(1\)</span>.</li>
+<li><span class="math inline">\(\pi_\theta(a_t \mid s_t)\)</span>: the probability our policy picked action <span class="math inline">\(a_t\)</span> at state <span class="math inline">\(s_t\)</span>. <strong>We control this.</strong></li>
+<li><span class="math inline">\(P(s_{t+1} \mid s_t, a_t)\)</span>: the probability the environment moved to <span class="math inline">\(s_{t+1}\)</span>. <strong>We do not control this.</strong></li>
+</ul>
+<p>The total reward for a trajectory is:</p>
+<p><span class="math display">\[
+R(\tau) = \sum_{t=0}^{T} r_t
+\]</span></p>
+<p>Our objective is the expected total reward over all possible trajectories:</p>
+<p><span class="math display">\[
+J(\theta) = \mathbb{E}_{\tau \sim P(\tau \mid \theta)}[R(\tau)]
+= \sum_{\tau} P(\tau \mid \theta)\, R(\tau)
+\]</span></p>
+<p>So when we take <span class="math inline">\(\nabla_\theta J\)</span>, we are differentiating:</p>
+<p><span class="math display">\[
+\nabla_\theta J
+= \nabla_\theta \sum_{\tau} P(\tau \mid \theta)\, R(\tau)
+= \sum_{\tau} R(\tau)\, \nabla_\theta P(\tau \mid \theta)
+\]</span></p>
+<p>Here, <span class="math inline">\(R(\tau)\)</span> is just a number, since it is the sum of rewards along the trajectory, so it does not depend on <span class="math inline">\(\theta\)</span>.</p>
+<p>But <span class="math inline">\(\nabla_\theta P(\tau \mid \theta)\)</span> is the hard part, because <span class="math inline">\(P(\tau \mid \theta)\)</span> contains the environment dynamics <span class="math inline">\(P(s_{t+1} \mid s_t, a_t)\)</span> inside the product. At first glance, it seems like we would need to differentiate through the environment.</p>
+<p>This is where the log-derivative trick comes in.</p>
+<h3 id="the-log-derivative-trick">The log derivative trick</h3>
+<p>In supervised learning, you have a loss like L = (model(x) - y)^2. Every piece of that computation is a differentiable function you wrote: the model is your neural net, the loss is a formula, and you can chain-rule through the entire thing from L back to the parameters. The computation graph is fully yours.</p>
+<p>In RL, think about what the “computation” looks like for one episode:</p>
+<ol type="1">
+<li>Policy sees state s_0, outputs distribution, <strong>samples</strong> action a_0</li>
+<li><strong>Environment</strong> receives a_0, returns s_1 and r_0</li>
+<li>Policy sees s_1, outputs distribution, <strong>samples</strong> action a_1</li>
+<li><strong>Environment</strong> receives a_1, returns s_2 and r_1</li>
+<li>… and so on</li>
+</ol>
+<p>Two problems jump out:</p>
+<p><strong>The environment is a black box.</strong> Steps 2 and 4 happen inside the environment. You don’t have a formula for “how does the grid world compute the next state.” You just call <code>env.step(action)</code> and get a result. There’s no computation graph to backprop through. It’s like trying to take the derivative of a function where half the operations happen inside a locked room.</p>
+<p><strong>Sampling breaks the gradient flow.</strong> Even on your side, the policy outputs a probability distribution, but then you <em>sample</em> a discrete action from it. “I rolled a 3” is not a differentiable operation. You can differentiate the probabilities [0.25, 0.35, 0.25, 0.15], but the act of drawing a sample from them is a discontinuous step.</p>
+<p>So the gradient of J with respect to θ has to somehow go through (a) a sampling operation and (b) an unknown environment. You can’t just backprop.</p>
+<p><strong>This is exactly what the log-derivative trick solves.</strong> It rearranges the math so that the gradient only touches log π_θ(a|s), which is entirely your policy, entirely differentiable. The environment and the sampling get absorbed into the expectation, which you estimate by just… running episodes.</p>
+<h2 id="the-log-derivative-trick-1">The Log-Derivative Trick</h2>
+<p>We left off here: we want <span class="math inline">\(\nabla_\theta J\)</span>, but we cannot backpropagate through the environment. Let us start from the definition of <span class="math inline">\(J\)</span> and see how the math rescues us.</p>
+<p><strong>Line 1: The definition of <span class="math inline">\(J\)</span>.</strong></p>
+<p><span class="math display">\[
+J(\theta) = \sum_{\tau} P(\tau \mid \theta)\, R(\tau)
+\]</span></p>
+<p>This says: sum over all possible trajectories <span class="math inline">\(\tau\)</span>, weight each by its probability under our policy, and multiply by its total reward. That is exactly what “expected total reward” means.</p>
+<p><strong>Line 2: Take the gradient.</strong></p>
+<p><span class="math display">\[
+\nabla_\theta J = \sum_{\tau} R(\tau)\, \nabla_\theta P(\tau \mid \theta)
+\]</span></p>
+<p>Here, <span class="math inline">\(R(\tau)\)</span> is just a number, since it is the sum of rewards from that trajectory, so it does not depend on <span class="math inline">\(\theta\)</span>. The gradient only acts on <span class="math inline">\(P(\tau \mid \theta)\)</span>.</p>
+<p>But <span class="math inline">\(P(\tau \mid \theta)\)</span> contains the environment dynamics inside it, so at first glance we seem stuck.</p>
+<p><strong>Line 3: The trick.</strong> Multiply and divide by <span class="math inline">\(P(\tau \mid \theta)\)</span>:</p>
+<p><span class="math display">\[
+\nabla_\theta P(\tau \mid \theta)
+=
+P(\tau \mid \theta)\,
+\frac{\nabla_\theta P(\tau \mid \theta)}{P(\tau \mid \theta)}
+\]</span></p>
+<p>Why would we do something that looks so silly? Because there is a useful calculus identity:</p>
+<p><span class="math display">\[
+\frac{\nabla f}{f} = \nabla \log f
+\]</span></p>
+<p>So we can rewrite:</p>
+<p><span class="math display">\[
+\frac{\nabla_\theta P(\tau \mid \theta)}{P(\tau \mid \theta)}
+=
+\nabla_\theta \log P(\tau \mid \theta)
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\nabla_\theta P(\tau \mid \theta)
+=
+P(\tau \mid \theta)\, \nabla_\theta \log P(\tau \mid \theta)
+\]</span></p>
+<p>Substituting this back into the gradient of <span class="math inline">\(J\)</span> gives:</p>
+<p><span class="math display">\[
+\nabla_\theta J
+=
+\sum_{\tau} R(\tau)\, P(\tau \mid \theta)\, \nabla_\theta \log P(\tau \mid \theta)
+\]</span></p>
+<p>This is the key move.</p>
+<p><strong>Question:</strong> We started with <span class="math inline">\(\nabla_\theta P(\tau \mid \theta)\)</span>, which was hard because <span class="math inline">\(P(\tau \mid \theta)\)</span> contains the environment dynamics. We have now rewritten it as</p>
+<p><span class="math display">\[
+P(\tau \mid \theta)\, \nabla_\theta \log P(\tau \mid \theta)
+\]</span></p>
+<p>Why might taking the gradient of the <strong>log</strong> of <span class="math inline">\(P\)</span> help us get rid of the environment dynamics?</p>
+<p>Think about what the logarithm does to a product.</p>
+<h2 id="implementation-naive-forward-pass-no-backprop">Implementation: Naive forward pass (no backprop)</h2>
+<p>Before we get to the backwards pass, let’s just focus on the implementing the forward pass first.</p>
+<p>We have our <code>tinyrl</code> policy skeleton:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># naive forward pass (no backprop)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> PolGrad(Policy):</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""PolGrad from scratch for grid world env"""</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, state_dim, n_actions):</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.state_dim <span class="op">=</span> state_dim</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.n_actions <span class="op">=</span> n_actions</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__call__</span>(<span class="va">self</span>, obs):</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># random for now </span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> PolicyOutput(</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>            action<span class="op">=</span>np.random.randint(<span class="va">self</span>.n_actions),</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>            entropy<span class="op">=</span>np.random.randint(<span class="va">self</span>.n_actions)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        )</span></code></pre></div>
+<p>Define the policy <span class="math inline">\(\theta\)</span> as a table of probabilities:</p>
+<p>We have 25 states (each cell in the 5x5 grid) and 4 actions. Our policy needs to output a probability distribution over actions for each state. So we need a 25x4 table.</p>
+<p>Each entry in the table is a <strong>logit</strong>: just a raw number, unconstrained. To turn a row of logits into probabilities, we apply softmax.</p>
+<p>Steps:</p>
+<ol type="1">
+<li>Initialize a 25x4 numpy array of zeros (all logits equal means uniform distribution, which is our random policy)</li>
+<li>Write a function that takes a row of logits and returns probabilities (softmax)</li>
+<li>Sample an action from those probabilities</li>
+</ol>
+<p>Solution:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># naive forward pass (no backprop)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> PolGrad(Policy):</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""PolGrad from scratch for grid world env"""</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, state_dim, n_actions, env_size):</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.state_dim <span class="op">=</span> state_dim</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.n_actions <span class="op">=</span> n_actions</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.env_size <span class="op">=</span> env_size</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.theta <span class="op">=</span> np.zeros((env_size <span class="op">*</span> env_size, n_actions))</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        pprint(<span class="va">self</span>.theta.shape)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> _state_to_idx(<span class="va">self</span>, obs):</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        row <span class="op">=</span> <span class="bu">int</span>(<span class="bu">round</span>(obs[<span class="dv">0</span>] <span class="op">*</span> (<span class="va">self</span>.env_size <span class="op">-</span> <span class="dv">1</span>)))</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        col <span class="op">=</span> <span class="bu">int</span>(<span class="bu">round</span>(obs[<span class="dv">1</span>] <span class="op">*</span> (<span class="va">self</span>.env_size <span class="op">-</span> <span class="dv">1</span>)))</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> row <span class="op">*</span> <span class="va">self</span>.env_size <span class="op">+</span> col</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> get_logits(<span class="va">self</span>, idx):</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.theta[idx]</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> softmax(<span class="va">self</span>, logits):</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.exp(logits) <span class="op">/</span> np.<span class="bu">sum</span>(np.exp(logits))</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> entropy(<span class="va">self</span>, probs):</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="op">-</span>np.<span class="bu">sum</span>(probs <span class="op">*</span> np.log(probs))</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> sample_action(<span class="va">self</span>, probs):</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>        <span class="co"># sample action from state distribution</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>        <span class="co"># note: not using argmax for training, only for eval</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.random.choice(probs.size, p<span class="op">=</span>probs)</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__call__</span>(<span class="va">self</span>, obs):</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>        idx <span class="op">=</span> <span class="va">self</span>._state_to_idx(obs)</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>        logits <span class="op">=</span> <span class="va">self</span>.get_logits(idx)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>        probs <span class="op">=</span> <span class="va">self</span>.softmax(logits)</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>        entropy <span class="op">=</span> <span class="va">self</span>.entropy(probs)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>        action <span class="op">=</span> <span class="va">self</span>.sample_action(probs)</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> PolicyOutput(</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>            action<span class="op">=</span>action,</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>            entropy<span class="op">=</span>entropy</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>        )</span></code></pre></div>
+<p>and that is it. That is the forward pass.</p>
+<h2 id="scratchpad">Scratchpad</h2>
+<p>Let a trajectory <span class="math inline">\(\tau\)</span> be:</p>
+<p><span class="math display">\[
+\tau = (s_0, a_0, r_0, s_1, a_1, r_1, \dots, s_T, a_T, r_T)
+\]</span></p>
+<p>The probability of this specific trajectory under policy <span class="math inline">\(\pi_\theta\)</span> is:</p>
+<p><span class="math display">\[
+P(\tau \mid \theta) = p(s_0)\prod_{t=0}^{T} \left[ \pi_\theta(a_t \mid s_t)\, P(s_{t+1} \mid s_t, a_t) \right]
+\]</span></p>
+<p>Breaking that apart:</p>
+<ul>
+<li><span class="math inline">\(p(s_0)\)</span>: the starting state distribution. For us, this is always <span class="math inline">\((0,0)\)</span>, so this is <span class="math inline">\(1\)</span>.</li>
+<li><span class="math inline">\(\pi_\theta(a_t \mid s_t)\)</span>: the probability our policy picked action <span class="math inline">\(a_t\)</span> at state <span class="math inline">\(s_t\)</span>. <strong>We control this.</strong></li>
+<li><span class="math inline">\(P(s_{t+1} \mid s_t, a_t)\)</span>: the probability the environment moved to <span class="math inline">\(s_{t+1}\)</span>. <strong>We do not control this.</strong></li>
+</ul>
+<p>The total reward for a trajectory is:</p>
+<p><span class="math display">\[
+R(\tau) = \sum_{t=0}^{T} r_t
+\]</span></p>
+<p>Our objective is the expected total reward over all possible trajectories:</p>
+<p><span class="math display">\[
+J(\theta) = \mathbb{E}_{\tau \sim P(\tau \mid \theta)}[R(\tau)]
+= \sum_{\tau} P(\tau \mid \theta)\, R(\tau)
+\]</span></p>
+<p>So when we take <span class="math inline">\(\nabla_\theta J\)</span>, we are differentiating:</p>
+<p><span class="math display">\[
+\nabla_\theta J
+= \nabla_\theta \sum_{\tau} P(\tau \mid \theta)\, R(\tau)
+= \sum_{\tau} R(\tau)\, \nabla_\theta P(\tau \mid \theta)
+\]</span></p>
+<p>Here, <span class="math inline">\(R(\tau)\)</span> is just a number, since it is the sum of rewards along the trajectory, so it does not depend on <span class="math inline">\(\theta\)</span>.</p>
+<p>But <span class="math inline">\(\nabla_\theta P(\tau \mid \theta)\)</span> is the hard part, because <span class="math inline">\(P(\tau \mid \theta)\)</span> contains the environment dynamics <span class="math inline">\(P(s_{t+1} \mid s_t, a_t)\)</span> inside the product. At first glance, it seems like we would need to differentiate through the environment.</p>
+<p>This is where the log-derivative trick comes in.</p>
+<p><span class="math inline">\(\gamma\)</span></p>
+
+
+
+
+
+
+</body></html>

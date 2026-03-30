@@ -6,6 +6,8 @@
 March 2026
 :::
 
+\> *To be updated soon!...* 
+
 <!-- ::: {.callout-note}
 In this post, I list most of the model training experience I have. It is mainly here to show potential employers of my experience. I have been training machine learning models since ~2020, starting off with basic convolutional neural nets for medical image classification. Then, I scaled up my modeling experience at insitro, where I learned to train big models on big clusters, in a distributed fashion, with industry standard infrastructure. I continued my modeling experience in my *research* and *projects*, training hundreds of models across experiments. Along the way, I've created some nice workflows to make my life easier; most notably, orchestrating with [wandb](https:// wandb.ai/profile/ rosikand), [serverless] (https://github.com/ rosikand/ parameter-golf/blob/ ro-dev-1/ infrastructure/ HOW_IT_WORKS.md) GPU run launches, and building out [my own training package] (https://github.com/ rosikand/torchplate/ tree/main).
 ::: -->
