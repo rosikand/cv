@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ingredients</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+<link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+
+
+
+
+<p><a href="../index.html" class="back">← back</a></p>
+<h1 id="desirable-ingredients-of-an-rlvr-algorithm">Desirable Ingredients of an RLVR algorithm</h1>
+<div class="date">
+<p>April 1, 2026</p>
+</div>
+<p>When thinking about designing a new RLVR algorithm to learn from verifiable rewards, there are certain properties and ingredients that we would ideally want to have satisfied. In this particular write-up, we list those ingredients.</p>
+<h2 id="dense-reward-signal">1. Dense Reward Signal</h2>
+<p><strong>The problem:</strong> Binary pass/fail is maximally sparse. A solution that fails one edge case gets the same reward as total nonsense. When all rollouts pass or all fail, the gradient is exactly zero.</p>
+<h2 id="on-policy-training">2. On-Policy Training</h2>
+<ul>
+<li><strong>The problem:</strong> Off-policy methods (SFT, offline distillation) suffer from exposure bias — the student encounters different partial sequences at inference than it saw during training, causing compounding errors.</li>
+<li><strong>What you want:</strong> The policy trains on its own generations, so the training distribution matches the deployment distribution by construction.</li>
+<li><strong>Why it matters:</strong> On-policy training eliminates distributional drift and prevents the policy from learning to “evade” a static reward signal. It’s why GRPO and PPO outperform offline alternatives for reasoning.</li>
+</ul>
+<h2 id="credit-assignment-beyond-sequence-level">3. Credit Assignment Beyond Sequence-Level</h2>
+<ul>
+<li><strong>The problem:</strong> In GRPO, every token in a response shares the same advantage. The model can’t distinguish which reasoning step caused success or failure.</li>
+<li><strong>What you want:</strong> Token-level or step-level credit assignment that tells the model <em>where</em> in the chain of thought things went right or wrong.</li>
+<li><strong>The tradeoff:</strong> Finer granularity = noisier supervision. Sequence-level is clean but coarse; token-level is dense but requires careful regularization.</li>
+</ul>
+<h2 id="resistance-to-reward-hacking">4. Resistance to Reward Hacking</h2>
+<ul>
+<li><strong>The problem:</strong> Any learned or proxy reward is a target for Goodhart’s law. The policy will find and exploit the gap between what the reward measures and what you actually want.</li>
+<li><strong>What you want:</strong> Either (a) a reward that co-trains with the policy so it can’t be statically exploited, or (b) diagnostic signals that let you <em>detect</em> overoptimization before it corrupts the policy.</li>
+</ul>
+<h2 id="exploration-support-expansion">5. Exploration / Support Expansion</h2>
+<ul>
+<li><strong>The problem:</strong> The “Invisible Leash” (Wu et al., 2026). Standard RLVR is a support-constrained optimizer — it concentrates mass on solutions the base model already knows, but rarely discovers new reasoning paths. Support shrinkage consistently outweighs expansion. Pass@1 goes up, but pass@k goes <em>down</em>.</li>
+<li><strong>What you want:</strong> Mechanisms that seed probability mass into underrepresented solution regions, not just sharpen existing modes.</li>
+<li><strong>The key insight:</strong> Pure on-policy policy gradient cannot escape the support ceiling at the <em>sequence</em> level.</li>
+</ul>
+<h2 id="no-or-minimal-external-dependencies">6. No (or Minimal) External Dependencies</h2>
+<ul>
+<li><strong>The problem:</strong> External teachers, external reward models, and human-labeled process supervision are expensive, introduce distributional gaps, and create static targets.</li>
+<li><strong>What you want:</strong> A self-contained training loop where the policy generates, evaluates, and improves using only the compute and signals already inside the pipeline. Zero inference-cost overhead at deployment.</li>
+<li><strong>The gold standard:</strong> The reward mechanism is discarded at deployment. The model reduces to a standard causal LM with no auxiliary heads, no teacher, no external judge.</li>
+</ul>
+<h2 id="efficient-use-of-environment-feedback">7. Efficient Use of Environment Feedback</h2>
+<ul>
+<li><strong>The problem:</strong> RLVR environments (code execution, tool use, agentic tasks) produce rich structured feedback — stack traces, error messages, partial outputs, execution states. All of this is discarded after computing binary pass/fail.</li>
+<li><strong>What you want:</strong> A mechanism to ingest and learn from that structured feedback. The ingredients for dense reward already exist inside the training loop — you just need a way to use them.</li>
+<li><strong>Why this is underexplored:</strong> Most RLVR work treats the environment as a black box that emits {0, 1}. But execution feedback is <em>objective</em>, <em>external</em>, and <em>free</em> — the ideal grounding signal for a reward model.</li>
+</ul>
+<h2 id="generalization-beyond-verifiable-domains">8. Generalization Beyond Verifiable Domains</h2>
+<ul>
+<li><strong>The problem:</strong> RLVR only works where you have a deterministic verifier. Math and code have one. Creative writing, open-ended reasoning, and most real-world tasks don’t.</li>
+</ul>
+
+
+
+
+
+
+</body></html>

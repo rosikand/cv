@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>problems</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+<link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+
+
+
+
+<p><a href="../index.html" class="back">← back</a></p>
+<h1 id="open-problems-in-rl-post-training">Open problems in RL post-training</h1>
+<div class="date">
+<p>March 31, 2026</p>
+</div>
+<ul>
+<li><strong>The Invisible Leash.</strong> RLVR is a support-constrained optimizer — it sharpens what the base model already knows but rarely discovers new reasoning paths; no principled mechanism provably expands sequence-level support under on-policy policy gradient.</li>
+<li><strong>The GRPO Dead Zone.</strong> When all rollouts in a group pass or all fail, the advantage is zero and no gradient flows — GRPO wastes 50–60% of training compute on non-informative updates, precisely on the hardest and easiest problems where signal matters most.</li>
+<li><strong>Credit Assignment.</strong> Every token in a rollout shares a single scalar advantage; the model cannot distinguish which reasoning step caused success or failure, and no existing approach (PRMs, token-level heads, gradient attribution) solves this end-to-end without external supervision or frozen targets.</li>
+<li><strong>Reward Hacking in Non-Verifiable Domains.</strong> Even deterministic verifiers can be gamed via clipping bias and proxy exploitation; in domains without verifiers, LLM-as-judge produces policies that deceive the judge rather than improve, and no hack-resistant dense reward signal exists for open-ended tasks.</li>
+<li><strong>Scaling Laws for RLVR.</strong> Compute-optimal allocation rules exist for vanilla GRPO (IsoCompute Playbook), but scaling laws for self-distillation methods, dense reward variants, and heterogeneous task mixtures are completely unstudied.</li>
+<li><strong>The Non-Verifiable Frontier.</strong> RLVR requires a deterministic verifier; extending it to creative writing, open-ended reasoning, and real-world tasks without collapsing to “train a reward model and hope” is arguably the single hardest open problem in post-training.</li>
+<li><strong>Curriculum and Data Mixing.</strong> Training dynamics differ qualitatively between easy and hard problems (easy needs regularization, hard doesn’t), progress on easy problems can degrade hard-problem performance in mixed batches, and no principled automatic curriculum exists for RLVR.</li>
+<li><strong>Multi-Turn and Agentic RLVR.</strong> Current RLVR is single-turn; real-world tasks (software engineering, tool use, research) are multi-turn with intermediate feedback, and credit assignment over long horizons compounds the sparsity problem exponentially.</li>
+<li><strong>On-Policy vs.&nbsp;Off-Policy.</strong> Distributed training makes RLVR inherently off-policy due to policy lag; self-distillation deliberately uses off-policy teacher targets; the optimal degree of off-policy-ness and whether principled hybrid methods can capture on-policy stability with off-policy sample efficiency remains unknown.</li>
+</ul>
+
+
+
+
+
+
+</body></html>

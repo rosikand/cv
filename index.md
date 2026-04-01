@@ -1,50 +1,17 @@
-::: {.header}
+# RL Research Notebook
 
-::: {.header-text}
-# 🦜 Rohan Sikand
+This page documents my journey doing reinforcement learning research and a place to gather all my thoughts. In it, I link posts to several things like notes, research ideas, open problems I'm thinking about solving, experimentation logs, results  etc.
 
-:::
+We focus specifically on post-training foundation models with RL. 
 
+## Writeups
 
-::: {.nav}
-[**Research & Projects**](research.html) [**Blog**](blog.html)
-:::
-
-:::
+- [Desirable Ingredients of a post-training RL algorithm](writeups/ingredients.html) — *April 1 2026*
+- [Open problems in RL post-training](writeups/problems.html) — *March 31 2026*
 
 
+## Experiments
 
-::: {.subtitle}
-**Stanford CS (AI) B.S., M.S. (2026)**
-:::
+<!-- *An experiment a day, keeps the doctor away*  -->
 
-::: {.profile-block}
-![](images/cartoon.jpg){.profile-pic}
-
-
-:::
-
-
-> <u>**Note**</u>: I am on the job market! I am looking for research or engineering positions in machine learning. Please feel free to reach out!
-
-
-
-
-I am interested in **AI research, ML engineering, startups, and venture capital**.
-
-In the past, I’ve conducted research in **self-supervised learning** at SAIL, engineered segmentation models at **insitro**, and built many ML projects.
-
-I am currently interested in **RL and reasoning for post-training foundation models** and also video models and VLA’s for **robot learning**. See my (informal) [research notebook](https://rosikand.github.io/research-notebook/) for more.
-
-I also infrequently write about startups and venture capital on **Substack** at [**Rohan’s Random Walks**](https://rosikand.substack.com/).
-
-In my free time, I play golf and tennis.
-
-Feel free to reach out!
-
----
-
-::: {.nav}
-[<i class="bi bi-twitter-x"></i>](https://x.com/rosikand){.icon-link} [<i class="bi bi-linkedin"></i>](https://www.linkedin.com/in/rosikand/){.icon-link} [<i class="bi bi-github"></i>](https://github.com/rosikand){.icon-link} [<i class="bi bi-mortarboard-fill"></i>](https://scholar.google.com/citations?user=E5Z8wUoAAAAJ){.icon-link} [<i class="bi bi-envelope-fill"></i>](mailto:rsikand@stanford.edu){.icon-link}
-:::
-
+- [Policy gradient on GridWorld](experiments/pg.html) — *March 27 2026*
